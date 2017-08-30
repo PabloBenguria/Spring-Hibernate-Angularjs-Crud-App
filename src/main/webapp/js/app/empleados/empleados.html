@@ -1,0 +1,108 @@
+<meta charset="UTF-8"/>
+<div class="container component-content">
+	<div class="row">
+		<div class="jumbotron">
+			<h1>EMPLEADOS</h1>
+		</div>
+	</div>
+	<div class="row wrap-filters">
+		<div class="col-xs-12 col-sm-4 form-group search">
+			<label for="buscarEmpleado">Buscar</label>
+			<input type="text" id="buscarEmpleado" class="form-control" ng-change="$ctrl.currentPage = 0" ng-model="buscarEmpleado" placeholder="Buscar">
+		</div>
+  	</div>
+	<div class="row">
+		<form ng-submit="$ctrl.crearEmpleado()" method="POST" name="empleadoForm">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Apellidos</th>
+						<th>Cargo</th>
+						<th>Dirección</th>
+						<th>Ciudad</th>
+						<th>CP</th>
+						<th>País</th>
+						<th>Teléfono</th>
+						<th>Editar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="empleado in $ctrl.filtered = ($ctrl.empleados | filter: buscarEmpleado) | paginateFilter:$ctrl.currentPage*$ctrl.pageSize | limitTo:$ctrl.pageSize track by $index">
+						<td>{{ empleado.nombre }}</td>
+						<td>{{ empleado.apellidos }}</td>
+						<td>{{ empleado.cargo }}</td>
+						<td>{{ empleado.direccion }}</td>
+						<td>{{ empleado.ciudad }}</td>
+						<td>{{ empleado.codpostal }}</td>
+						<td>{{ empleado.pais }}</td>
+						<td>{{ empleado.telefono }}</td>
+						<td><a ng-click="$ctrl.setEditable($index)" class="btn btn-warning">Editar</a></td>
+					</tr>
+					<tr>
+						<td ng-class="[{'has-error': empleadoForm.nombre.$error.minlength}, {'has-error': empleadoForm.nombre.$error.maxlength}, {'has-success': empleadoForm.nombre.$valid}]">
+							<input type="text" name="nombre" class="form-control" ng-model="$ctrl.empleado.nombre" placeholder="Nombre" ng-minlength="4" ng-maxlength="10" required>
+							<p ng-show="empleadoForm.nombre.$error.minlength" class="help-block">Nombre demasiado corto.</p>
+            				<p ng-show="empleadoForm.nombre.$error.maxlength" class="help-block">Nombre demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': empleadoForm.apellidos.$error.minlength}, {'has-error': empleadoForm.apellidos.$error.maxlength}, {'has-success': empleadoForm.apellidos.$valid}]">
+							<input type="text" name="apellidos" class="form-control" ng-model="$ctrl.empleado.apellidos" placeholder="Apellidos" ng-minlength="4" ng-maxlength="20" required>
+							<p ng-show="empleadoForm.apellidos.$error.minlength" class="help-block">Apellidos demasiado cortos.</p>
+            				<p ng-show="empleadoForm.apellidos.$error.maxlength" class="help-block">Apellidos demasiado largos.</p>
+						</td>
+						<td ng-class="[{'has-error': empleadoForm.cargo.$error.minlength}, {'has-error': empleadoForm.cargo.$error.maxlength}, {'has-success': empleadoForm.cargo.$valid}]">
+							<input type="text" name="cargo" class="form-control" ng-model="$ctrl.empleado.cargo" placeholder="Cargo" ng-minlength="4" ng-maxlength="10" required>
+							<p ng-show="empleadoForm.cargo.$error.minlength" class="help-block">Cargo demasiado corto.</p>
+            				<p ng-show="empleadoForm.cargo.$error.maxlength" class="help-block">Cargo demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': empleadoForm.direccion.$error.minlength}, {'has-error': empleadoForm.direccion.$error.maxlength}, {'has-success': empleadoForm.direccion.$valid}]">
+							<input type="text" name="direccion" class="form-control" ng-model="$ctrl.empleado.direccion" placeholder="Dirección" ng-minlength="4" ng-maxlength="60" required>
+							<p ng-show="empleadoForm.direccion.$error.minlength" class="help-block">Direccion demasiado corto.</p>
+            				<p ng-show="empleadoForm.direccion.$error.maxlength" class="help-block">Direccion demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': empleadoForm.ciudad.$error.minlength}, {'has-error': empleadoForm.ciudad.$error.maxlength}, {'has-success': empleadoForm.ciudad.$valid}]">
+							<input type="text" name="ciudad" class="form-control" ng-model="$ctrl.empleado.ciudad" placeholder="Ciudad" ng-minlength="4" ng-maxlength="20" required>
+							<p ng-show="empleadoForm.ciudad.$error.minlength" class="help-block">Ciudad demasiado corto.</p>
+            				<p ng-show="empleadoForm.ciudad.$error.maxlength" class="help-block">Ciudad demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': empleadoForm.codpostal.$error.minlength}, {'has-error': empleadoForm.codpostal.$error.maxlength}, {'has-success': empleadoForm.codpostal.$valid}]">
+							<input type="text" name="codpostal" class="form-control" ng-model="$ctrl.empleado.codpostal" placeholder="CP" ng-minlength="4" ng-maxlength="12" required>
+							<p ng-show="empleadoForm.codpostal.$error.minlength" class="help-block">CP demasiado corto.</p>
+            				<p ng-show="empleadoForm.codpostal.$error.maxlength" class="help-block">CP demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': empleadoForm.pais.$error.minlength}, {'has-error': empleadoForm.pais.$error.maxlength}, {'has-success': empleadoForm.pais.$valid}]">
+							<input type="text" name="pais" class="form-control" ng-model="$ctrl.empleado.pais" placeholder="Paìs" ng-minlength="2" ng-maxlength="20" required>
+							<p ng-show="empleadoForm.pais.$error.minlength" class="help-block">País demasiado corto.</p>
+            				<p ng-show="empleadoForm.pais.$error.maxlength" class="help-block">País demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': empleadoForm.telefono.$error.minlength}, {'has-error': empleadoForm.telefono.$error.maxlength}, {'has-success': empleadoForm.telefono.$valid}]">
+							<input type="text" name="telefono" class="form-control" ng-model="$ctrl.empleado.telefono" placeholder="Teléfono" ng-minlength="4" ng-maxlength="15" required>
+							<p ng-show="empleadoForm.telefono.$error.minlength" class="help-block">Teléfono demasiado corto.</p>
+            				<p ng-show="empleadoForm.telefono.$error.maxlength" class="help-block">Teléfono demasiado largo.</p>
+						</td>
+						<!-- Crear -->
+						<td ng-show="$ctrl.editable"><button type="submit" class="btn btn-primary" ng-class="{'disabled': empleadoForm.$invalid}" ng-disabled="empleadoForm.$invalid">Crear</button></td>
+						<!-- Editar -->
+						<td class="wrap-editar" ng-hide="$ctrl.editable">
+							<a ng-click="$ctrl.editarEmpleado()" class="btn btn-primary" ng-class="{'disabled': empleadoForm.$invalid}" ng-disabled="empleadoForm.$invalid">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							</a>
+							<a ng-click="$ctrl.setNotEditable()" class="btn btn-default">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div class="row">
+		<div class="pagination">
+			<button class="btn btn-default" ng-disabled="$ctrl.currentPage == 0" ng-click="$ctrl.currentPage=0" title="Primera">&lt&lt</button>
+			<button class="btn btn-default" ng-disabled="$ctrl.currentPage == 0" ng-click="$ctrl.currentPage=$ctrl.currentPage-1" title="Anterior">&lt</button>
+	    	{{$ctrl.currentPage+1}}/{{$ctrl.remainingPage()}}
+	    	<button class="btn btn-default" ng-disabled="$ctrl.currentPage >= $ctrl.filtered.length/$ctrl.pageSize - 1" ng-click="$ctrl.currentPage=$ctrl.currentPage+1" title="Siguiente">&gt</button>
+	    	<button class="btn btn-default" ng-disabled="$ctrl.currentPage >= $ctrl.filtered.length/$ctrl.pageSize - 1" ng-click="$ctrl.currentPage=$ctrl.remainingPage()-1" title="Última">&gt&gt</button>
+		</div>
+	</div>
+</div>

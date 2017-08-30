@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Neptuno</title>
+		<base href="http://localhost:8080/">
+		<link rel="stylesheet" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/main.css"/>
+	</head>
+	<body>
+	
+		<menu-component></menu-component>
+		<div ui-view></div>
+	
+		<!--Angular librerías-->
+		<script type="text/javascript" src="js/common/angular.min.js"></script>
+		<script type="text/javascript" src="js/common/angular-resource.min.js"></script>
+		<script type="text/javascript" src="js/common/angular-ui-router.min.js"></script>
+		  
+		<!--Angular app-->
+		<script type="text/javascript" src="js/app/services/factory.js"></script>
+		<script type="text/javascript" src="js/app/menu/menu.module.js"></script>
+		<script type="text/javascript" src="js/app/paginate.filter.js"></script>
+		<script type="text/javascript" src="js/app/clientes/clientes.module.js"></script>
+		<script type="text/javascript" src="js/app/empleados/empleados.module.js"></script>
+		<script type="text/javascript" src="js/app/pedidos/pedidos.module.js"></script>
+		<script type="text/javascript" src="js/app/app.js"></script> 
+		 
+		<!--JS librerías-->
+		<script type="text/javascript" src="js/common/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="js/common/bootstrap.min.js"></script>
+	</body>
+</html>

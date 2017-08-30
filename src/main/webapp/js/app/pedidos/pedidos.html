@@ -1,0 +1,120 @@
+<meta charset="UTF-8"/>
+<div class="container component-content">
+	<div class="row">
+		<div class="jumbotron">
+			<h1>PEDIDOS</h1>
+		</div>
+	</div>
+	<div class="row wrap-filters">
+		<div class="col-xs-12 col-sm-4 form-group search">
+			<label for="selectAll">Buscar</label>
+			<input type="text" id="selectAll" class="form-control" ng-change="$ctrl.currentPage = 0" ng-model="buscarPedido" placeholder="Buscar">
+		</div>
+		<div class="col-xs-12 col-sm-4 form-group search">
+    		<label for="selectCliente">Filtrar por cliente</label>
+    		<select id="selectCliente" class="form-control" name="cliente" ng-change="$ctrl.currentPage = 0" ng-model="buscarCliente" ng-options="cliente.nombreempresa for cliente in $ctrl.clientes track by cliente.nombreempresa" required>
+				<option value="">- Cliente -</option>
+			</select>
+  		</div>
+  		<div class="col-xs-12 col-sm-4 form-group search">
+  			<label for="selectEmpleado">Filtrar por empleado</label>
+  			<select id="selectEmpleado" class="form-control" name="empleado" ng-change="$ctrl.currentPage = 0" ng-model="buscarEmpleado" ng-options="empleado.nombre for empleado in $ctrl.empleados track by empleado.nombre" required>
+				<option value="">- Empleado -</option>
+			</select>
+  		</div>
+  	</div>
+  	<div class="row">
+		<form ng-submit="$ctrl.crearPedido()" method="POST" name="pedidoForm">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Fecha</th>
+						<th>Destinatario</th>
+						<th>Importe</th>
+						<th>Dirección</th>
+						<th>CP</th>
+						<th>País</th>
+						<th>Cliente</th>
+						<th>Empleado</th>
+						<th>Editar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="pedido in $ctrl.filtered = ($ctrl.pedidos | filter: buscarPedido | filter: buscarCliente.nombreempresa | filter: buscarEmpleado.nombre) | paginateFilter:$ctrl.currentPage*$ctrl.pageSize | limitTo:$ctrl.pageSize track by $index">
+						<td>{{ pedido.fechapedido | date:"dd/MM/yyyy" }}</td>
+						<td>{{ pedido.destinatario }}</td>
+						<td>{{ pedido.importe }}</td>
+						<td>{{ pedido.direccion }}</td>
+						<td>{{ pedido.codigopostal }}</td>
+						<td>{{ pedido.pais }}</td>
+						<td>{{ pedido.cliente.nombreempresa }}</td>
+						<td>{{ pedido.empleado.nombre }} {{ pedido.empleado.apellidos }}</td>
+						<td><a ng-click="$ctrl.setEditable($index)" class="btn btn-warning">Editar</a></td>
+					</tr>
+					<tr>
+						<td ng-class="[{'has-error': pedidoForm.fecha.$error.minlength}, {'has-error': pedidoForm.fecha.$error.maxlength}, {'has-success': pedidoForm.fecha.$valid}]">
+							<input type="date" name="fecha" class="form-control" ng-model="$ctrl.pedido.fechapedido" placeholder="YYYY-MM-DD" ng-minlength="10" ng-maxlength="10" required>
+							<p ng-show="pedidoForm.fecha.$error.minlength" class="help-block">Fecha demasiado corta.</p>
+            				<p ng-show="pedidoForm.fecha.$error.maxlength" class="help-block">Fecha demasiado larga.</p>
+						</td>
+						<td ng-class="[{'has-error': pedidoForm.destinatario.$error.minlength}, {'has-error': pedidoForm.destinatario.$error.maxlength}, {'has-success': pedidoForm.destinatario.$valid}]">
+							<input type="text" name="destinatario" class="form-control" ng-model="$ctrl.pedido.destinatario" placeholder="Destinatario" ng-minlength="4" ng-maxlength="40" required>
+							<p ng-show="pedidoForm.destinatario.$error.minlength" class="help-block">Destinatario demasiado corto.</p>
+            				<p ng-show="pedidoForm.destinatario.$error.maxlength" class="help-block">Destinatario demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': pedidoForm.importe.$error.minlength}, {'has-error': pedidoForm.importe.$error.maxlength}, {'has-success': pedidoForm.importe.$valid}]">
+							<input type="number" name="importe" class="form-control" ng-model="$ctrl.pedido.importe" placeholder="Importe" ng-minlength="1" ng-maxlength="10" required>
+							<p ng-show="pedidoForm.importe.$error.minlength" class="help-block">Importe demasiado corto.</p>
+            				<p ng-show="pedidoForm.importe.$error.maxlength" class="help-block">Importe demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': pedidoForm.direccion.$error.minlength}, {'has-error': pedidoForm.direccion.$error.maxlength}, {'has-success': pedidoForm.direccion.$valid}]">
+							<input type="text" name="direccion" class="form-control" ng-model="$ctrl.pedido.direccion" placeholder="Dirección" ng-minlength="5" ng-maxlength="60" required>
+							<p ng-show="pedidoForm.direccion.$error.minlength" class="help-block">Dirección demasiado corto.</p>
+            				<p ng-show="pedidoForm.direccion.$error.maxlength" class="help-block">Dirección demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': pedidoForm.cp.$error.minlength}, {'has-error': pedidoForm.cp.$error.maxlength}, {'has-success': pedidoForm.cp.$valid}]">
+							<input type="text" name="cp" class="form-control" ng-model="$ctrl.pedido.codigopostal" placeholder="CP" ng-minlength="4" ng-maxlength="12" required>
+							<p ng-show="pedidoForm.cp.$error.minlength" class="help-block">CP demasiado corto.</p>
+            				<p ng-show="pedidoForm.cp.$error.maxlength" class="help-block">CP demasiado largo.</p>
+						</td>
+						<td ng-class="[{'has-error': pedidoForm.pais.$error.minlength}, {'has-error': pedidoForm.pais.$error.maxlength}, {'has-success': pedidoForm.pais.$valid}]">
+							<input type="text" name="pais" class="form-control" ng-model="$ctrl.pedido.pais" placeholder="País" ng-minlength="2" ng-maxlength="20" required>
+							<p ng-show="pedidoForm.pais.$error.minlength" class="help-block">País demasiado corto.</p>
+            				<p ng-show="pedidoForm.pais.$error.maxlength" class="help-block">País demasiado largo.</p>
+						</td>
+						<td>
+							<select class="form-control" name="cliente" ng-model="$ctrl.pedido.cliente" ng-options="cliente.nombreempresa for cliente in $ctrl.clientes track by cliente.nombreempresa" required>
+								<option value="" style="display:none">- Cliente -</option>
+							</select>
+						</td>
+						<td>
+							<select class="form-control" name="empleado" ng-model="$ctrl.pedido.empleado" ng-options="(empleado.nombre + ' ' + empleado.apellidos) for empleado in $ctrl.empleados track by empleado.nombre" required>
+								<option value="" style="display:none">- Empleado -</option>
+							</select>
+						</td>
+						<!-- Crear -->
+						<td ng-show="$ctrl.editable"><button type="submit" class="btn btn-primary" ng-class="{'disabled': pedidoForm.$invalid}" ng-disabled="pedidoForm.$invalid">Crear</button></td>
+						<!-- Editar -->
+						<td class="wrap-editar" ng-hide="$ctrl.editable">
+							<a ng-click="$ctrl.editarPedido()" class="btn btn-primary" ng-class="{'disabled': pedidoForm.$invalid}" ng-disabled="pedidoForm.$invalid">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							</a>
+							<a ng-click="$ctrl.setNotEditable()" class="btn btn-default">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div class="row">
+		<div class="pagination">
+			<button class="btn btn-default" ng-disabled="$ctrl.currentPage == 0" ng-click="$ctrl.currentPage=0" title="Primera">&lt&lt</button>
+			<button class="btn btn-default" ng-disabled="$ctrl.currentPage == 0" ng-click="$ctrl.currentPage=$ctrl.currentPage-1" title="Anterior">&lt</button>
+	    	{{$ctrl.currentPage+1}}/{{$ctrl.remainingPage()}}
+	    	<button class="btn btn-default" ng-disabled="$ctrl.currentPage >= $ctrl.filtered.length/$ctrl.pageSize - 1" ng-click="$ctrl.currentPage=$ctrl.currentPage+1" title="Siguiente">&gt</button>
+	    	<button class="btn btn-default" ng-disabled="$ctrl.currentPage >= $ctrl.filtered.length/$ctrl.pageSize - 1" ng-click="$ctrl.currentPage=$ctrl.remainingPage()-1" title="Última">&gt&gt</button>
+		</div>
+	</div>
+</div>
